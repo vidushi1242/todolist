@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width , initial-scale=1">
+        <title>To-Do List App</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="todo-app">
+                <h2><img src="img2.jpg">
+                To-Do List </h2>
+                <h2><span id="date"></span></h2>
+                <div class="row">
+                    <!-- <input type="date" id="dateInput"> -->
+                    <input type="text" id="input-box" placeholder="Add your text">
+                    <button onclick="addTask()">ADD</button>
+
+                </div>
+                
+                <ul id="list-container">
+                    <!-- <li class="checked"> Task 1</li>
+                    <li>Task 2</li>
+                    <li>Task 3</li> -->
+                    
+                </ul>
+            </div>
+        </div>
+
+       <script >    
+    //    src="script.js"
+    const inputBox = document.getElementById("input-box");
+const listContainer = document.getElementById("list-container");
+
+let dateInput;
+const currentDate = new Date();
+ const formattedDate = currentDate.toDateString();
+//   console.log("Current Date:", formattedDate);
+// const listItems = listContainer.getElementsByTagName("li");
+// for (let i = 0; i < listItems.length; i++) {
+//     listItems[i].textContent = `Task ${i + 1} - ${formattedDate}`;
+//     localStorage.setItem("formattedDate", listContainer.innerHTML);
+//     document.write(formattedDate);
+// }
+
+function displayDate(){
+    let date = new Date()
+    date = date.toString().split(" ")
+    document.querySelector("#date").innerHTML = date[1] +" "+ date[2] + " "+date[3]
+}
+window.onload = function(){
+    displayDate()
+}
+
+function addTask(){
+    if(inputBox.value === ''){
+        alert("You must write something!");
+    }
+    else{
+        let li = document.createElement("li");
+        li.innerHTML = inputBox.value;
+        listContainer.appendChild(li);
+        let span = document.createElement("span");
+        span.innerHTML = '\u00d7';
+        li.appendChild(span);  
+        // let dateInput = document.createElement("dateInput");
+        // dateInput.innerHTML = inputBox.value;
+        // li.appendChild(dateInput);
+
+        dateInput = document.getElementById("dateInput");
+        dateInput.innerHTML = inputBox.value;
+        // var now = new Date();
+        // // document.write(now.toDateString());
+        span.appendChild(dateInput);
+        
+    }
+    inputBox.value = ""; 
+    saveData();   
+}
+
+listContainer.addEventListener("click", function(e){
+    if(e.target.tagName === "LI"){
+       e.target.classList.toggle("checked");
+       saveData();
+    }
+    else if(e.target.tagName === "SPAN"){
+        
+        e.target.parentElement.remove();
+
+        saveData();
+    }
+
+} , false);
+
+function saveData(){
+    localStorage.setItem("data", listContainer.innerHTML);
+    localStorage.setItem("dateInput", listContainer.innerHTML);
+}
+
+function showTask(){
+    listContainer.innerHTML = localStorage.getItem("data");
+    listContainer.innerHTML = localStorage.getItem("dateInput");
+      document.write(formattedDate);
+}
+showTask();
+
+       </script>
+    </body>
+</html>
